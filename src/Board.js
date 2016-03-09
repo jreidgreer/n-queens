@@ -79,12 +79,28 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      var instancesFound = 0;
+      var currentRows = this.rows();
+      for(var i = 0; i < currentRows[rowIndex].length; i++) {
+        if(currentRows[rowIndex][i]){
+          instancesFound++;
+        }
+      }
+      if (instancesFound > 1) {
+        return true;
+      } else {
+        return false;
+      }
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      for(var j = 0; j < this.rows().length; j++) {
+        if(this.hasRowConflictAt(j)){
+          return true;
+        }
+      }
+      return false;
     },
 
 
@@ -94,12 +110,30 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      var instancesFound = 0;
+      var currentRows = this.rows();
+
+      for(var i = 0; i < currentRows.length; i++){
+        if (currentRows[i][colIndex]) {
+          instancesFound++;
+        }
+      }
+      if (instancesFound > 1) {
+        return true;
+      } else {
+        return false;
+      }
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      var colNum = this.rows()[0].length;
+      for(var j = 0; j < colNum; j++) {
+        if(this.hasColConflictAt(j)){
+          return true;
+        }
+      }
+      return false;
     },
 
 
@@ -108,7 +142,23 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
-    hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
+    hasMajorDiagonalConflictAt: function(indexes) {
+      console.log(indexes);
+      var totalRows = this.rows();
+      var rowIndex = indexes[0];
+      var colIndex = indexes[1];
+
+      var currentRow = rowIndex + 1;
+      var currentCol = colIndex + 1;
+
+      for(var i = currentRow; i < totalRows.length; i++) {
+        if(totalRows[currentRow][currentCol]) {
+          return true;
+        } else {
+          currentRow++;
+          currentCol++;
+        }
+      }
       return false; // fixme
     },
 
