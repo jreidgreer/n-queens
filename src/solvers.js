@@ -23,21 +23,17 @@ window.findNRooksSolution = function(n) {
     var testBoard = {};
     _.extend(testBoard, currentBoard);
     for (var i = 0; i < n; i++) {
-      console.log(testBoard);
 
       var testRows = testBoard.rows();
       testRows[currentRow][i] = 1;
 
-      console.log('Has any Rook Conflicts? ' + testBoard.hasAnyRooksConflicts());
       if (!testBoard.hasAnyRooksConflicts()) {
         if (currentRow === testBoard.rows().length - 1) {
           solution = testBoard.rows();
-          console.log('Triggered solution:', solution);
         } else {
           testRow(currentRow + 1, testBoard);
         }
       } else {
-        debugger;
         testRows[currentRow][i] = 0;
       }
     } 
@@ -83,8 +79,46 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
+  var solution = new Board({'n': 0}).rows();
+  var isSolved = false;
+  var board = new Board({'n': n});
 
+  if (n === 0 || n === 2 || n === 3) {
+    return board.rows();
+  }
+
+  var testRow = function(currentRow, currentBoard) {
+    if (isSolved) {
+      return;
+    }
+    var testBoard = {};
+    _.extend(testBoard, currentBoard);
+    // if ( n === 4 && testBoard.rows()[0][1] === 1 && testBoard.rows()[1][3] === 1 && testBoard.rows()[2][0] && testBoard.rows[3][2]) {
+    //   debugger;
+    // }
+    for (var i = 0; i < n; i++) {
+
+      var testRows = testBoard.rows();
+      testRows[currentRow][i] = 1;
+
+      if (!testBoard.hasAnyQueensConflicts()) {
+        if (currentRow === testBoard.rows().length - 1) {
+          solution = testBoard.rows();
+          isSolved = true;
+          console.log(solution);
+          break;
+        } else {
+          testRow(currentRow + 1, testBoard);
+        }
+      } 
+      if (isSolved) {
+        return;
+      }
+      testRows[currentRow][i] = 0;
+    } 
+  };
+
+  testRow(0, board);
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
 };

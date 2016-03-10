@@ -95,6 +95,10 @@
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
+      if (this.rows().length === 0) {
+        return false;
+      }
+      
       for (var j = 0; j < this.rows().length; j++) {
         if (this.hasRowConflictAt(j)) {
           return true;
@@ -127,6 +131,10 @@
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
+      if (this.rows().length === 0) {
+        return false;
+      }
+
       var colNum = this.rows()[0].length;
       for (var j = 0; j < colNum; j++) {
         if (this.hasColConflictAt(j)) {
@@ -162,6 +170,10 @@
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
+      if (this.rows().length === 0) {
+        return false;
+      }
+      
       var rowLength = this.rows()[0].length - 1;
       var currentIndex = (this.rows()[0].length - 1) * -1;
 
@@ -201,6 +213,10 @@
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
+      if (this.rows().length === 0) {
+        return false;
+      }
+      
       var currentIndex = (this.rows()[0].length - 1) * 2;
 
       while ( currentIndex >= 0 ) {
