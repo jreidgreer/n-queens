@@ -81,8 +81,8 @@
     hasRowConflictAt: function(rowIndex) {
       var instancesFound = 0;
       var currentRows = this.rows();
-      for(var i = 0; i < currentRows[rowIndex].length; i++) {
-        if(currentRows[rowIndex][i]){
+      for (var i = 0; i < currentRows[rowIndex].length; i++) {
+        if (currentRows[rowIndex][i]) {
           instancesFound++;
         }
       }
@@ -95,8 +95,8 @@
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      for(var j = 0; j < this.rows().length; j++) {
-        if(this.hasRowConflictAt(j)){
+      for (var j = 0; j < this.rows().length; j++) {
+        if (this.hasRowConflictAt(j)) {
           return true;
         }
       }
@@ -113,7 +113,7 @@
       var instancesFound = 0;
       var currentRows = this.rows();
 
-      for(var i = 0; i < currentRows.length; i++){
+      for (var i = 0; i < currentRows.length; i++) {
         if (currentRows[i][colIndex]) {
           instancesFound++;
         }
@@ -128,8 +128,8 @@
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
       var colNum = this.rows()[0].length;
-      for(var j = 0; j < colNum; j++) {
-        if(this.hasColConflictAt(j)){
+      for (var j = 0; j < colNum; j++) {
+        if (this.hasColConflictAt(j)) {
           return true;
         }
       }
@@ -142,28 +142,36 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
-    hasMajorDiagonalConflictAt: function(indexes) {
-      console.log(indexes);
+    hasMajorDiagonalConflictAt: function(index) {
       var totalRows = this.rows();
-      var rowIndex = indexes[0];
-      var colIndex = indexes[1];
+      var colIndex = index;
+      var instancesFound = 0;
 
-      var currentRow = rowIndex + 1;
-      var currentCol = colIndex + 1;
-
-      for(var i = currentRow; i < totalRows.length; i++) {
-        if(totalRows[currentRow][currentCol]) {
-          return true;
-        } else {
-          currentRow++;
-          currentCol++;
+      for (var i = 0; i < totalRows.length; i++) {
+        if (totalRows[i][colIndex] === 1) {
+          instancesFound++;
         }
+        colIndex++;  
       }
-      return false; // fixme
+      if (instancesFound > 1) {
+        return true;
+      } else {
+        return false; // fixme
+      }
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
+      var rowLength = this.rows()[0].length - 1;
+      var currentIndex = (this.rows()[0].length - 1) * -1;
+
+      while ( currentIndex <= rowLength ) {
+        if (this.hasMajorDiagonalConflictAt(currentIndex)) {
+          return true;
+        }
+        currentIndex++;
+      }
+
       return false; // fixme
     },
 
@@ -173,13 +181,35 @@
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
-    hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+    hasMinorDiagonalConflictAt: function(index) {
+      var totalRows = this.rows();
+      var colIndex = index;
+      var instancesFound = 0;
+
+      for (var i = 0; i < totalRows.length; i++) {
+        if (totalRows[i][colIndex] === 1) {
+          instancesFound++;
+        }
+        colIndex--;  
+      }
+      if (instancesFound > 1) {
+        return true;
+      } else {
+        return false; // fixme
+      }
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      var currentIndex = (this.rows()[0].length - 1) * 2;
+
+      while ( currentIndex >= 0 ) {
+        if (this.hasMinorDiagonalConflictAt(currentIndex)) {
+          return true;
+        }
+        currentIndex--;
+      }
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
